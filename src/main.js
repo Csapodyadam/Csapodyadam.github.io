@@ -37,7 +37,7 @@ function renderProjects(filter = "all") {
 
     const imgHTML = proj.image
       ? `<img src="${proj.image}" alt="${proj.title}" class="project-img" loading="lazy" />`
-      : `<div class="project-img-placeholder" data-label="PCB Design"></div>`;
+      : `<div class="project-img-placeholder" data-label="${proj.placeholderLabel || 'PCB Design'}"></div>`;
 
     const tagsHTML = proj.tags
       .map((t) => `<span class="tag">${t}</span>`)
