@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Op-Amp IC Tester | Adam Csapody</title>
+  <link rel="stylesheet" href="../src/styles.css" />
+  <link rel="stylesheet" href="../src/project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav-header">
+    <nav class="nav container">
+      <a href="../index.html" class="nav-logo">csapody<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main class="project-main">
+
+    <!-- HERO -->
+    <section class="proj-hero">
+      <svg class="hero-wave" viewBox="0 0 1000 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline points="0,40 60,40 60,10 120,10 120,70 180,70 180,10 240,10 240,40 320,40 320,10 380,10 380,70 440,70 440,40 550,40 550,10 610,10 610,70 670,70 670,40 1000,40"
+          fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+
+      <div class="container">
+        <a href="../index.html#projects" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Projects
+        </a>
+
+        <div class="proj-hero-content">
+          <div class="proj-tags-row">
+            <span class="tag">KiCad</span>
+            <span class="tag">LTSpice</span>
+            <span class="tag">Analog</span>
+            <span class="tag">Hardware</span>
+            <span class="proj-version">V1</span>
+          </div>
+          <h1 class="proj-title">Op-Amp IC Tester</h1>
+          <p class="proj-subtitle">
+            A custom PCB for quickly verifying the functionality of DIP-packaged operational amplifier ICs.
+            Configures the device under test as a Schmitt trigger — a working op-amp produces a visible LED response.
+            Designed in KiCad and validated with full LTSpice simulations before fabrication.
+          </p>
+
+          <div class="proj-meta-row">
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Tool</span>
+              <span class="proj-meta-value">KiCad</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Simulation</span>
+              <span class="proj-meta-value">LTSpice XVII</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Supported packages</span>
+              <span class="proj-meta-value">8-pin & 14-pin DIP</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Supply modes</span>
+              <span class="proj-meta-value">Single (+9V) / Dual (±4.5V)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="proj-section" id="overview">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">01</span>
+          <span class="section-name">Overview</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>What is it?</h2>
+          <p>
+            When working with op-amp ICs — whether pulled from a parts bin or received from a supplier —
+            there is no easy way to quickly confirm a device is functional before soldering it into a circuit.
+            This tester board solves that problem.
+          </p>
+          <p>
+            Insert the IC, select the supply mode, press the test button, and the LEDs tell you instantly
+            whether the op-amp is working. No oscilloscope, no bench power supply, no complicated setup.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Up to 3 ICs simultaneously</strong>
+                <p>Three IC sockets support 8-pin (single/dual) and 14-pin (quad) DIP packages.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Dual/Single supply switch</strong>
+                <p>A slide switch selects between 0V/+9V (single) and ±4.5V (dual) supply rails.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Instant LED readout</strong>
+                <p>Reverse-polarity LED pairs show both positive and negative output swing at a glance.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Push-to-test</strong>
+                <p>A momentary button on the board corner powers the test — no accidental activation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="proj-section proj-section-alt" id="how-it-works">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">02</span>
+          <span class="section-name">How It Works</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Schmitt Trigger as a Test Method</h2>
+          <p>
+            The test principle is straightforward: when an op-amp is connected as a
+            <strong>Schmitt trigger</strong> (a positive-feedback comparator), it should self-oscillate
+            and produce a square wave output. Resistors and a capacitor on the board set the oscillation
+            frequency. The output is then fed into a pair of antiparallel LEDs.
+          </p>
+          <p>
+            If the op-amp is working correctly, it will rail-to-rail switch continuously
+            — one LED fires on the positive half-cycle, the other on the negative half-cycle,
+            resulting in visible flashing.
+          </p>
+
+          <div class="mode-cards">
+            <div class="mode-card">
+              <div class="mode-card-header">
+                <span class="mode-badge mode-single">Single Supply</span>
+                <code class="mode-voltage">0V / +9V</code>
+              </div>
+              <p>
+                The op-amp output swings between 0V and +9V. Only the positive-polarity LED
+                flashes — the reverse-polarity LED cannot conduct without a negative rail.
+                A working IC will show a single blinking LED.
+              </p>
+            </div>
+            <div class="mode-card">
+              <div class="mode-card-header">
+                <span class="mode-badge mode-dual">Dual Supply</span>
+                <code class="mode-voltage">−4.5V / +4.5V</code>
+              </div>
+              <p>
+                The supply voltage is split symmetrically around ground. The output swings
+                positive and negative, so <em>both</em> LEDs in each pair flash alternately —
+                a clear visual indication of full rail-to-rail operation.
+              </p>
+            </div>
+          </div>
+
+          <div class="usage-steps">
+            <h3>How to Use</h3>
+            <ol class="steps-list">
+              <li><span class="step-num">1</span> Insert the op-amp IC into the correct socket (8-pin or 14-pin).</li>
+              <li><span class="step-num">2</span> Set the slide switch to the desired supply mode.</li>
+              <li><span class="step-num">3</span> Press and hold the <code>TEST</code> button on the board corner.</li>
+              <li><span class="step-num">4</span> Observe the LEDs — flashing as expected means the IC is good.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIMULATIONS -->
+    <section class="proj-section" id="simulations">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">03</span>
+          <span class="section-name">Simulations</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>LTSpice Verification</h2>
+          <p>
+            Before laying out the PCB, the full circuit was simulated in LTSpice to verify
+            oscillation frequency, LED current levels, and correct behaviour in both supply modes.
+            The simulation confirmed square-wave output and safe LED drive currents across both configurations.
+          </p>
+
+          <div class="sim-grid">
+            <figure class="sim-figure">
+              <div class="img-frame">
+                <img src="../assets/images/opamp-tester/page2_img1.png"
+                     alt="LTSpice dual supply mode simulation — output waveform and LED current"
+                     loading="lazy" />
+              </div>
+              <figcaption>
+                <strong>Dual supply mode</strong> — Output waveform (top) and LED current (right axis).
+                Both LEDs alternate, confirming full ±4.5V swing.
+              </figcaption>
+            </figure>
+
+            <figure class="sim-figure">
+              <div class="img-frame">
+                <img src="../assets/images/opamp-tester/page2_img2.png"
+                     alt="LTSpice single supply mode simulation — output waveform and LED current"
+                     loading="lazy" />
+              </div>
+              <figcaption>
+                <strong>Single supply mode</strong> — Output toggles between 0V and +9V.
+                Only the positive-polarity LED fires, as expected.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHEMATIC -->
+    <section class="proj-section proj-section-alt" id="schematic">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">04</span>
+          <span class="section-name">Schematic</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Circuit Design</h2>
+          <p>
+            The board is divided into two main circuit blocks: the power supply section and
+            the Schmitt trigger test section. Both were captured in KiCad.
+          </p>
+
+          <figure class="sim-figure">
+            <div class="img-frame img-frame-wide">
+              <img src="../assets/images/opamp-tester/page3_img1.png"
+                   alt="Dual/Single supply power circuit schematic"
+                   loading="lazy" />
+            </div>
+            <figcaption>
+              <strong>Power supply circuit</strong> — A 9V DC jack feeds an op-amp voltage splitter
+              (OP2, R1/R2 10kΩ, C1 22µF) to generate the dual ±4.5V rails.
+              A 3-position slide switch (SS-12D06L3) selects single or dual mode.
+              Bypass capacitors (C2, C3 100nF) filter both rails at the point of use.
+            </figcaption>
+          </figure>
+
+          <figure class="sim-figure" style="margin-top: 2rem;">
+            <div class="img-frame img-frame-wide">
+              <img src="../assets/images/opamp-tester/page4_img1.png"
+                   alt="Schmitt trigger test circuit — single, dual, and quad channel variants"
+                   loading="lazy" />
+            </div>
+            <figcaption>
+              <strong>Schmitt trigger test circuits</strong> — Three variants side-by-side:
+              single-channel (8-pin), dual-channel (8-pin), and quad-channel (14-pin).
+              Each channel is independently configured with RC timing components and
+              a reverse-polarity LED pair.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- V2 PLANS -->
+    <section class="proj-section" id="v2">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">05</span>
+          <span class="section-name">V2 Plans</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>What's Next</h2>
+          <p>
+            V1 validated the core concept. The following improvements are planned for V2:
+          </p>
+          <ul class="v2-list">
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>SMD component testing</strong>
+                <p>Add test pads and adapters to support SOIC/SOT packaged op-amps, not just DIP.</p>
+              </div>
+            </li>
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>Flexible power input</strong>
+                <p>
+                  Accept a 9V DC barrel jack, a 9V battery, or USB-C (via an on-board
+                  5V → 9V DC-DC boost converter), with an overvoltage protection circuit clamping
+                  higher inputs to 9V.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>Crosstalk fix</strong>
+                <p>Improved ground plane and decoupling to eliminate the inter-channel crosstalk observed in V1.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-proj">
+      <a href="../index.html#projects" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Projects
+      </a>
+      <p>Adam Csapody &mdash; <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="../src/main.js"></script>
+</body>
+</html>

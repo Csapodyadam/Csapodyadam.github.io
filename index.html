@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adam Csapody | Portfolio</title>
+  <link rel="stylesheet" href="src/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav-header">
+    <nav class="nav container">
+      <a href="#" class="nav-logo">csapody<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+
+      <!-- Oscilloscope waveform decoration -->
+      <svg class="hero-wave" viewBox="0 0 1000 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline
+          points="0,60 80,60 80,15 160,15 160,105 240,105 240,15 320,15 320,60 420,60 420,15 500,15 500,105 580,105 580,60 680,60 680,15 760,15 760,105 840,105 840,60 1000,60"
+          fill="none" stroke="rgba(0,212,255,0.12)" stroke-width="1.5" stroke-linejoin="round"/>
+        <!-- Scope cursor line -->
+        <line x1="420" y1="0" x2="420" y2="120" stroke="rgba(0,212,255,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- Measurement markers -->
+        <circle cx="80"  cy="60"  r="3" fill="rgba(0,212,255,0.2)"/>
+        <circle cx="240" cy="105" r="3" fill="rgba(0,212,255,0.2)"/>
+        <circle cx="500" cy="15"  r="3" fill="rgba(0,212,255,0.2)"/>
+        <circle cx="760" cy="15"  r="3" fill="rgba(0,212,255,0.2)"/>
+      </svg>
+
+      <!-- Corner circuit traces -->
+      <svg class="circuit-corner circuit-tl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0,40 L30,40 L30,10 L60,10" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="1.5"/>
+        <path d="M0,70 L50,70 L50,30 L90,30 L90,10" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1"/>
+        <circle cx="30" cy="40" r="3" fill="none" stroke="rgba(0,212,255,0.25)" stroke-width="1.5"/>
+        <circle cx="50" cy="70" r="3" fill="none" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+      </svg>
+
+      <svg class="circuit-corner circuit-br" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M120,80 L90,80 L90,110 L60,110" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="1.5"/>
+        <path d="M120,50 L70,50 L70,90 L30,90 L30,110" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1"/>
+        <circle cx="90" cy="80" r="3" fill="none" stroke="rgba(0,212,255,0.25)" stroke-width="1.5"/>
+        <circle cx="70" cy="50" r="3" fill="none" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+      </svg>
+
+      <div class="container hero-content">
+        <p class="hero-greeting">Hi, I'm</p>
+        <h1 class="hero-name">Adam Csapody</h1>
+        <h2 class="hero-role typed-text"></h2>
+        <p class="hero-bio">
+          Electrical Design Engineer and MSc student at BME VIK, passionate about
+          PCB design, analog circuits, and sustainable electronics. I turn schematics
+          into working hardware — from first simulation to final board.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View My Work</a>
+          <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+        </div>
+      </div>
+
+      <div class="hero-glow"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about section" id="about">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              I'm an Electrical Design Engineer and Product Owner with an MSc in
+              Electrical Engineering at BME VIK. My day-to-day work spans schematic
+              capture, PCB layout, and cross-functional collaboration — bridging the
+              gap between engineering and product thinking.
+            </p>
+            <p>
+              Outside of work I research sustainable electronics and take on personal
+              hardware projects that let me explore new circuits, push my design skills,
+              and build things I actually want to use.
+            </p>
+          </div>
+          <div class="about-stats">
+            <div class="stat-card">
+              <span class="stat-number" id="projects-count">0</span>
+              <span class="stat-label">Projects Built</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="skills-count">0</span>
+              <span class="stat-label">Technologies</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">∞</span>
+              <span class="stat-label">Boards Reviewed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="projects section" id="projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">All</button>
+        </div>
+        <div class="projects-grid" id="projects-grid"></div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="skills section" id="skills">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid" id="skills-grid"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact section" id="contact">
+      <div class="container">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="contact-subtitle">
+          Have a project, collaboration idea, or just want to connect? Feel free to reach out.
+        </p>
+        <div class="contact-links">
+          <a href="mailto:csapody10@gmail.com" class="contact-card">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            <span>csapody10@gmail.com</span>
+          </a>
+          <a href="https://www.linkedin.com/in/ádám-csapody-a98938210" target="_blank" rel="noopener" class="contact-card">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Designed &amp; built by Adam Csapody &mdash; <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <script src="src/projects.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>

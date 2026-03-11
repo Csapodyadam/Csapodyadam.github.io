@@ -1,0 +1,52 @@
+/**
+ * =============================================
+ *  PORTFOLIO DATA — edit this file to update
+ *  your portfolio without touching HTML/CSS
+ * =============================================
+ */
+
+// ── PROJECTS ──────────────────────────────────
+const PROJECTS = [
+  {
+    title: "CV Display PCB",
+    description:
+      "A custom PCB business card built around an ESP32 that displays a digital CV and QR code on a TFT screen. Features an onboard LiPo charging IC and LDO regulator for a self-contained, portable form factor. Programmed in C++ via Arduino IDE.",
+    tags: ["Altium Designer", "ESP32", "C++", "Hardware"],
+    image: "",
+    links: [],
+    featured: true,
+  },
+  {
+    title: "Op-Amp IC Tester",
+    description:
+      "A test PCB for verifying the functionality of operational amplifier ICs. Configures the device under test as a Schmitt trigger — a passing IC drives LED indicators. Validated with a full SPICE simulation in LTSpice prior to fabrication.",
+    tags: ["KiCad", "LTSpice", "Analog", "Hardware"],
+    image: "",
+    links: [],
+    page: "projects/opamp-tester.html",
+    featured: false,
+  },
+];
+
+// ── SKILLS ────────────────────────────────────
+const SKILLS = [
+  {
+    category: "Hardware & EDA",
+    items: ["Altium Designer", "LTSpice", "PCB Layout", "Schematic Capture", "Analog Circuits", "Power Electronics"],
+  },
+  {
+    category: "Programming",
+    items: ["C++", "Arduino IDE", "MATLAB"],
+  },
+  {
+    category: "Domain Knowledge",
+    items: ["Electrical Design", "Product Ownership", "Sustainable Electronics", "Circuit Simulation"],
+  },
+];
+
+// ── TYPED ROLE STRINGS ────────────────────────
+const ROLES = [
+  "Electrical Design Engineer",
+  "PCB Designer",
+  "MSc Student @ BME",
+];
