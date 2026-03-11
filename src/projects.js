@@ -40,7 +40,7 @@ const SKILLS = [
   },
   {
     category: "Domain Knowledge",
-    items: ["Electrical Design", "Product Ownership", "Sustainable Electronics", "Circuit Simulation"],
+    items: ["Electrical Design", "Sustainable Electronics", "Circuit Simulation"],
   },
 ];
 
