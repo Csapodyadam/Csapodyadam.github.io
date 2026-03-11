@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quill AI Writing Studio | Adam Csapody</title>
+  <link rel="stylesheet" href="../src/styles.css" />
+  <link rel="stylesheet" href="../src/project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav-header">
+    <nav class="nav container">
+      <a href="../index.html" class="nav-logo">csapody<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main class="project-main">
+
+    <!-- HERO -->
+    <section class="proj-hero">
+      <svg class="hero-wave" viewBox="0 0 1000 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline points="0,40 60,40 60,10 120,10 120,70 180,70 180,10 240,10 240,40 320,40 320,10 380,10 380,70 440,70 440,40 550,40 550,10 610,10 610,70 670,70 670,40 1000,40"
+          fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+
+      <div class="container">
+        <a href="../index.html#projects" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Projects
+        </a>
+
+        <div class="proj-hero-content">
+          <div class="proj-tags-row">
+            <span class="tag">Python</span>
+            <span class="tag">Streamlit</span>
+            <span class="tag">Ollama</span>
+            <span class="tag">NLP</span>
+            <span class="proj-version">V6</span>
+          </div>
+          <h1 class="proj-title">Quill &mdash; AI Writing Studio</h1>
+          <p class="proj-subtitle">
+            A locally-hosted AI writing assistant built with Streamlit and Ollama. Quill runs a local
+            LLM (Llama 3.1 8B) to generate and refine prose in four distinct voice styles, with a
+            live synonym lookup, a session history timeline, and a full dark/light theme. No API keys
+            or internet connection required.
+          </p>
+
+          <div class="proj-meta-row">
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Framework</span>
+              <span class="proj-meta-value">Streamlit</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">LLM Backend</span>
+              <span class="proj-meta-value">Ollama — Llama 3.1 8B</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Language</span>
+              <span class="proj-meta-value">Python 3</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Versions</span>
+              <span class="proj-meta-value">V1 &rarr; V6 (iterative)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="proj-section" id="overview">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">01</span>
+          <span class="section-name">Overview</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>What is it?</h2>
+          <p>
+            Quill is a personal AI writing tool built to run entirely on a local machine. It wraps
+            the Ollama inference server in a polished Streamlit web interface, letting you generate
+            long-form prose, articles, and narratives without sending any data to an external API.
+          </p>
+          <p>
+            The project started as a simple prompt wrapper (V1 — "Personalized Article Lab") and
+            evolved across six iterations into a full creative writing environment with a distinct
+            typographic identity, real-time draft editing, and session state management.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Four writing voices</strong>
+                <p>Choose between Storytelling, Professional, Minimalist, or Witty — the selected style is injected into every generation prompt.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Scrapbook input</strong>
+                <p>Drop raw notes, plot points, or bullet ideas into the scrapbook field. The model expands them into a polished draft at the target word count.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Inline refinement</strong>
+                <p>Send a plain-English instruction to rewrite the current draft — remove lists, adjust the title, shift tone — without starting over.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Synonym Lab</strong>
+                <p>NLTK WordNet lookup returns up to eight contextual synonyms instantly, displayed as chips alongside the editor.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Session timeline</strong>
+                <p>Up to ten draft snapshots are stored per session. Any previous state can be restored with one click, and the full history can be cleared.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Dark / Light theme</strong>
+                <p>A full dual-theme system with toggling between a deep charcoal dark mode and a warm off-white light mode, both sharing the same gold accent palette.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="proj-section proj-section-alt" id="how-it-works">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">02</span>
+          <span class="section-name">How It Works</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Architecture</h2>
+          <p>
+            Quill has a simple two-tier architecture: a Streamlit front-end running in the browser,
+            and the Ollama inference server running locally on <code>localhost:11434</code>.
+            All communication happens over a plain HTTP POST request — no streaming, no websockets.
+          </p>
+          <p>
+            The entire app state is managed through Streamlit's <code>st.session_state</code>:
+            the current draft, selected voice, dark mode preference, and the history list.
+            Every action that modifies the draft first saves a snapshot to the history stack
+            before overwriting, so every generation and refinement is reversible.
+          </p>
+
+          <div class="mode-cards">
+            <div class="mode-card">
+              <div class="mode-card-header">
+                <span class="mode-badge mode-single">Generation</span>
+                <code class="mode-voltage">generate()</code>
+              </div>
+              <p>
+                The scrapbook text and target word count are bundled with the selected voice style
+                into a single prompt. The model returns a complete draft which replaces the canvas.
+              </p>
+            </div>
+            <div class="mode-card">
+              <div class="mode-card-header">
+                <span class="mode-badge mode-dual">Refinement</span>
+                <code class="mode-voltage">polish()</code>
+              </div>
+              <p>
+                The instruction text is prefixed to the current draft and sent back to the model.
+                The voice style is intentionally excluded so the refinement follows the literal
+                instruction rather than regenerating from scratch.
+              </p>
+            </div>
+          </div>
+
+          <div class="usage-steps">
+            <h3>How to Run</h3>
+            <ol class="steps-list">
+              <li><span class="step-num">1</span> Start Ollama and pull the model: <code>ollama pull llama3.1:8b</code></li>
+              <li><span class="step-num">2</span> Install dependencies: <code>pip install streamlit requests nltk</code></li>
+              <li><span class="step-num">3</span> Launch the app: <code>streamlit run article_lab.py</code> (or double-click <code>write_tool.bat</code>)</li>
+              <li><span class="step-num">4</span> Select a voice, enter notes, set a target word count, and click Generate.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN -->
+    <section class="proj-section" id="design">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">03</span>
+          <span class="section-name">UI Design</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Typographic Identity</h2>
+          <p>
+            A deliberate typographic system separates the interface chrome from the writing surface.
+            The navigation and controls use <strong>DM Mono</strong> — a monospace face that
+            reinforces the tool-like feel. The main editor canvas switches to
+            <strong>Spectral</strong>, a serif reading typeface, so the draft feels like a document
+            rather than a form field. Headlines use <strong>DM Serif Display</strong> in italic for
+            the wordmark.
+          </p>
+          <p>
+            The colour palette is anchored by a warm gold accent
+            (<code>#C9A84C</code> in dark mode, <code>#8B6A1F</code> in light mode) against near-black
+            surfaces. This combination deliberately avoids the cold blue-white palette common in
+            developer tools, giving Quill a more editorial, print-inspired character.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>DM Mono — interface layer</strong>
+                <p>Used for all labels, buttons, metadata, and the synonym chips. Uppercase tracking gives controls a refined, typeset appearance.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Spectral — writing canvas</strong>
+                <p>The main text area uses a 1.15rem Spectral serif with generous 1.8 line spacing and large side padding, mimicking a manuscript page.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Gold accent system</strong>
+                <p>Active states, synonyms, and stat values all use the gold accent, creating a consistent focal hierarchy without any additional hue.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Danger colour for destructive actions</strong>
+                <p>The Clear History button uses a muted red (<code>#8B3A3A</code>) with reduced opacity at rest and full saturation on hover — a standard pattern for irreversible actions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VERSION HISTORY -->
+    <section class="proj-section proj-section-alt" id="versions">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">04</span>
+          <span class="section-name">Version History</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Iterative Development</h2>
+          <p>
+            The project was developed across six versions, each adding a focused set of
+            improvements over the previous iteration:
+          </p>
+          <ul class="v2-list">
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>V1 — Personalized Article Lab</strong>
+                <p>Initial proof-of-concept. A basic Streamlit form with a hardcoded system prompt enforcing anti-AI-cliché rules, platform selection (blog, LinkedIn, email), and a simple NLTK synonym lookup.</p>
+              </div>
+            </li>
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>V2 / V3 — Visual redesign</strong>
+                <p>Renamed to <em>Quill</em>. Introduced the dark/light theme system, the DM Serif Display wordmark, the gold accent palette, and a left-nav / right-canvas two-column layout.</p>
+              </div>
+            </li>
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>V4 — Voice system</strong>
+                <p>Replaced the platform selector with four named writing voices (Storytelling, Professional, Minimalist, Witty). Added the Refine Draft panel and the editable word count slider.</p>
+              </div>
+            </li>
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>V5 — Session timeline</strong>
+                <p>Added the history snapshot system. Each generation and polish action saves the previous draft. Snapshot restoration fixed a <code>TypeError</code> caused by an incorrect Streamlit button keyword argument.</p>
+              </div>
+            </li>
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>V6 (current) — Polish</strong>
+                <p>Added the Clear History button with danger styling, extended the history limit to ten snapshots, added the 200-word option to the word count slider, and introduced live word count and active voice display in the stat bar.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-proj">
+      <a href="../index.html#projects" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Projects
+      </a>
+      <p>Adam Csapody &mdash; <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="../src/main.js"></script>
+</body>
+</html>

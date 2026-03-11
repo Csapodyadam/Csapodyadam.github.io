@@ -26,6 +26,16 @@ const PROJECTS = [
     page: "projects/opamp-tester.html",
     featured: false,
   },
+  {
+    title: "Quill — AI Writing Studio",
+    description:
+      "A locally-hosted AI writing assistant built with Streamlit and Ollama. Generates and refines long-form prose in four voice styles (Storytelling, Professional, Minimalist, Witty) using a local Llama 3.1 8B model. Features inline refinement, a synonym lab, session history timeline, and a full dark/light theme. Developed iteratively across six versions.",
+    tags: ["Python", "Streamlit", "Ollama", "NLP"],
+    image: "",
+    links: [],
+    page: "projects/quill-ai-writer.html",
+    featured: false,
+  },
 ];
 
 // ── SKILLS ────────────────────────────────────
