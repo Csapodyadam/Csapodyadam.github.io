@@ -2,21 +2,21 @@
    PodcastCopilot — app.js  (Groq / static build)
    ================================================ */
 
-const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL   = "llama-3.1-8b-instant";
+const GROQ_URL        = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_WHISPER    = "https://api.groq.com/openai/v1/audio/transcriptions";
+const GROQ_CHAT_MODEL = "llama-3.1-8b-instant";
+const GROQ_STT_MODEL  = "whisper-large-v3-turbo";
 
-const WINDOW_MS       = 2 * 60 * 1000;   // 2 min live window
-const ANALYZE_EVERY   = 20_000;           // analyze every 20s
-const TOPIC_EXPIRY_MS = 10 * 60 * 1000;  // topic buttons live 10 min
+const WINDOW_MS       = 2 * 60 * 1000;
+const ANALYZE_EVERY   = 20_000;
+const TOPIC_EXPIRY_MS = 10 * 60 * 1000;
 const EXPIRY_TICK_MS  = 1_000;
+const CHUNK_MS        = 8_000;   // audio chunk size sent to Whisper
 
-// Question trigger patterns — immediate analysis when these are detected
 const QUESTION_PATTERNS = [
-  // English
   /\b(how does|how do|how is|how are|why does|why do|why is|what is|what are|what was|who is|when did|where does)\b/i,
   /\b(i don'?t know|no idea|i never (knew|understood)|i always wondered|i wonder|do you know|have you heard)\b/i,
   /\b(tell me (more|about)|explain|i'?m curious|interesting)\b/i,
-  // Hungarian
   /\b(hogyan|miért|mi az|mi a|ki az|mikor|hol|hogy működik)\b/i,
   /\b(nem tudom|fogalmam sincs|sosem értettem|mindig kíváncsi|érdekes|tudod-e|hallottad)\b/i,
 ];
@@ -68,30 +68,22 @@ Return only the summary text, no extra formatting.`;
 
 // ── API key management ─────────────────────────────────────────────────────────
 const LS_KEY = "podcastcopilot_groq_key";
-
-function getApiKey() {
-  return localStorage.getItem(LS_KEY) || "";
-}
-
-function saveApiKey(key) {
-  localStorage.setItem(LS_KEY, key.trim());
-}
+function getApiKey() { return localStorage.getItem(LS_KEY) || ""; }
+function saveApiKey(k) { localStorage.setItem(LS_KEY, k.trim()); }
 
 // ── State ─────────────────────────────────────────────────────────────────────
-let recognition   = null;
 let isListening   = false;
 let selectedLang  = "hu-HU";
 let analyzeTimer      = null;
 let expiryTimer       = null;
 let quickTriggerTimer = null;
+let audioStream       = null;
+let chunkTimer        = null;
 
-// Each entry: { text, timestamp }
 let liveLines     = [];
 let archivedText  = "";
 let summaryText   = "";
 let pendingArchive = false;
-
-// Each topic: { id, label, question, answer, sources, createdAt, element }
 let topics = [];
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
@@ -118,11 +110,7 @@ const langBtns        = document.querySelectorAll(".lang-btn");
 
 // ── Setup bar ─────────────────────────────────────────────────────────────────
 function initSetupBar() {
-  if (getApiKey()) {
-    setupBar.classList.add("hidden");
-  } else {
-    setupBar.classList.remove("hidden");
-  }
+  getApiKey() ? setupBar.classList.add("hidden") : setupBar.classList.remove("hidden");
 }
 
 saveKeyBtn.addEventListener("click", () => {
@@ -156,10 +144,7 @@ langBtns.forEach(btn => {
     langBtns.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     selectedLang = btn.dataset.lang;
-    if (isListening) {
-      stopListening();
-      startListening();
-    }
+    if (isListening) { stopListening(); startListening(); }
   });
 });
 
@@ -167,68 +152,133 @@ langBtns.forEach(btn => {
 startBtn.addEventListener("click", startListening);
 stopBtn.addEventListener("click",  stopListening);
 
-function startListening() {
+async function startListening() {
   if (!getApiKey()) {
     setupBar.classList.remove("hidden");
     apiKeyInput.focus();
     return;
   }
 
-  if (!("webkitSpeechRecognition" in window) && !("SpeechRecognition" in window)) {
-    setStatus("error", "Speech recognition not supported. Use Chrome.");
+  try {
+    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (e) {
+    setStatus("error", "Microphone access denied.");
     return;
   }
 
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SR();
-  recognition.continuous     = true;
-  recognition.interimResults = true;
-  recognition.lang           = selectedLang;
-
-  recognition.onstart = () => {
-    isListening = true;
-    startBtn.classList.add("hidden");
-    stopBtn.classList.remove("hidden");
-    transcriptEmpty.classList.add("hidden");
-    setStatus("listening", "Listening…");
-    scheduleAnalyze();
-    startExpiryTicker();
-  };
-
-  recognition.onresult = (e) => {
-    let interim = "";
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      const result = e.results[i];
-      if (result.isFinal) {
-        addLine(result[0].transcript.trim());
-      } else {
-        interim += result[0].transcript;
-      }
-    }
-    interimLine.textContent = interim;
-  };
-
-  recognition.onerror = (e) => {
-    if (e.error === "no-speech") return;
-    setStatus("error", `Error: ${e.error}`);
-  };
-
-  recognition.onend = () => {
-    if (isListening) recognition.start();
-  };
-
-  recognition.start();
+  isListening = true;
+  startBtn.classList.add("hidden");
+  stopBtn.classList.remove("hidden");
+  transcriptEmpty.classList.add("hidden");
+  setStatus("listening", "Listening…");
+  scheduleAnalyze();
+  startExpiryTicker();
+  recordChunk();
 }
 
 function stopListening() {
   isListening = false;
-  recognition?.stop();
+  clearTimeout(chunkTimer);
   clearTimeout(analyzeTimer);
   clearInterval(expiryTimer);
+  audioStream?.getTracks().forEach(t => t.stop());
+  audioStream = null;
   startBtn.classList.remove("hidden");
   stopBtn.classList.add("hidden");
   interimLine.textContent = "";
   setStatus("idle", "Stopped");
+}
+
+// ── Audio recording loop ──────────────────────────────────────────────────────
+function recordChunk() {
+  if (!isListening || !audioStream) return;
+
+  const chunks = [];
+  const mr = new MediaRecorder(audioStream);
+
+  mr.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+
+  mr.onstop = async () => {
+    if (!chunks.length) return;
+    const mimeType = mr.mimeType || "audio/webm";
+    const blob = new Blob(chunks, { type: mimeType });
+    try {
+      // Show a subtle "transcribing" indicator in the interim line
+      interimLine.textContent = "…";
+      const text = await groqTranscribe(blob, mimeType);
+      interimLine.textContent = "";
+      if (text && text.trim()) addLine(text.trim());
+    } catch (e) {
+      interimLine.textContent = "";
+      console.warn("Transcribe failed:", e);
+    }
+  };
+
+  mr.start();
+  chunkTimer = setTimeout(() => {
+    if (mr.state === "recording") mr.stop();
+    recordChunk(); // start next chunk immediately
+  }, CHUNK_MS);
+}
+
+// ── Groq Whisper ──────────────────────────────────────────────────────────────
+async function groqTranscribe(blob, mimeType) {
+  const key  = getApiKey();
+  const lang = selectedLang === "hu-HU" ? "hu" : "en";
+  const ext  = mimeType.includes("webm") ? "webm"
+             : mimeType.includes("mp4")  ? "mp4"
+             : mimeType.includes("ogg")  ? "ogg"
+             : "wav";
+
+  const form = new FormData();
+  form.append("file",            blob, `audio.${ext}`);
+  form.append("model",           GROQ_STT_MODEL);
+  form.append("language",        lang);
+  form.append("response_format", "json");
+
+  const res = await fetch(GROQ_WHISPER, {
+    method:  "POST",
+    headers: { "Authorization": `Bearer ${key}` },
+    body:    form,
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+
+  const data = await res.json();
+  return data.text || "";
+}
+
+// ── Groq Chat ─────────────────────────────────────────────────────────────────
+async function groqChat(system, userMsg, maxTokens = 1024, jsonMode = false) {
+  const key = getApiKey();
+  if (!key) throw new Error("No API key set");
+
+  const body = {
+    model:    GROQ_CHAT_MODEL,
+    messages: [
+      { role: "system", content: system },
+      { role: "user",   content: userMsg },
+    ],
+    max_tokens: maxTokens,
+  };
+  if (jsonMode) body.response_format = { type: "json_object" };
+
+  const res = await fetch(GROQ_URL, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${key}` },
+    body:    JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+
+  const data = await res.json();
+  return data.choices[0].message.content.trim();
 }
 
 // ── Transcript management ─────────────────────────────────────────────────────
@@ -266,9 +316,7 @@ function archiveOldLines() {
 
   const allNodes = transcriptLines.querySelectorAll(".transcript-line");
   const toRemove = allNodes.length - liveLines.length;
-  for (let i = 0; i < toRemove; i++) {
-    transcriptLines.firstChild?.remove();
-  }
+  for (let i = 0; i < toRemove; i++) transcriptLines.firstChild?.remove();
 
   transcriptLines.querySelectorAll(".transcript-line").forEach((el, idx) => {
     el.classList.toggle("fresh", idx >= transcriptLines.children.length - 3);
@@ -284,8 +332,7 @@ async function summarizeArchived() {
   try {
     const toSummarize = archivedText.trim();
     archivedText = "";
-
-    const text = await groqChat(SUMMARIZE_SYSTEM, toSummarize, 512);
+    const text = await groqChat(SUMMARIZE_SYSTEM, toSummarize, 512, false);
     if (text) {
       summaryText = summaryText ? summaryText + " " + text : text;
       renderSummary();
@@ -298,24 +345,21 @@ async function summarizeArchived() {
 }
 
 function renderSummary() {
-  if (!summaryText) {
-    summaryBlock.classList.add("hidden");
-    return;
-  }
+  if (!summaryText) { summaryBlock.classList.add("hidden"); return; }
   summaryTextEl.textContent = summaryText;
   summaryBlock.classList.remove("hidden");
 }
+
+deleteSummary.addEventListener("click", () => {
+  summaryText = "";
+  summaryBlock.classList.add("hidden");
+});
 
 clearTopicsBtn.addEventListener("click", () => {
   topics.forEach(t => t.wrapper.remove());
   topics = [];
   updateTopicCount();
   topicsEmpty.classList.remove("hidden");
-});
-
-deleteSummary.addEventListener("click", () => {
-  summaryText = "";
-  summaryBlock.classList.add("hidden");
 });
 
 clearTranscript.addEventListener("click", () => {
@@ -333,45 +377,11 @@ function scrollTranscript() {
   el.scrollTop = el.scrollHeight;
 }
 
-// ── Groq API ──────────────────────────────────────────────────────────────────
-async function groqChat(system, userMsg, maxTokens = 1024) {
-  const key = getApiKey();
-  if (!key) throw new Error("No API key set");
-
-  const res = await fetch(GROQ_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${key}`,
-    },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      messages: [
-        { role: "system", content: system },
-        { role: "user",   content: userMsg },
-      ],
-      max_tokens: maxTokens,
-      response_format: { type: "json_object" },
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err?.error?.message || `HTTP ${res.status}`);
-  }
-
-  const data = await res.json();
-  return data.choices[0].message.content.trim();
-}
-
 // ── Analysis ──────────────────────────────────────────────────────────────────
 function scheduleAnalyze() {
   clearTimeout(analyzeTimer);
   analyzeTimer = setTimeout(async () => {
-    if (isListening) {
-      await runAnalysis();
-      scheduleAnalyze();
-    }
+    if (isListening) { await runAnalysis(); scheduleAnalyze(); }
   }, ANALYZE_EVERY);
 }
 
@@ -380,18 +390,14 @@ async function runAnalysis() {
   if (transcript.length < 30) return;
 
   setStatus("analyzing", "Analyzing…");
-
   try {
     let context = "";
     if (summaryText) context = `[Earlier context summary]\n${summaryText}\n\n`;
     context += `[Live transcript — last ~2 minutes]\n${transcript}`;
 
-    const text = await groqChat(ANALYZE_SYSTEM, context, 1024);
+    const text = await groqChat(ANALYZE_SYSTEM, context, 1024, true);
     const data = JSON.parse(text);
-
-    if (data.topics?.length) {
-      data.topics.forEach(t => addTopic(t));
-    }
+    if (data.topics?.length) data.topics.forEach(t => addTopic(t));
   } catch (e) {
     console.warn("Analyze failed:", e);
     if (e.message.includes("401") || e.message.toLowerCase().includes("invalid")) {
@@ -443,18 +449,15 @@ function addTopic({ label, question, answer, sources }) {
 
   card.querySelector(".topic-dismiss").addEventListener("click", () => removeTopic(id));
   wrapper.appendChild(card);
-
   topicsList.prepend(wrapper);
 
-  const topic = { id, label, question, answer, sources, createdAt, wrapper, card, btn };
-  topics.push(topic);
+  topics.push({ id, label, question, answer, sources, createdAt, wrapper, card, btn });
   updateTopicCount();
 }
 
 function expandTopic(id) {
   const topic = topics.find(t => t.id === id);
   if (!topic) return;
-
   topic.btn.classList.add("expanded");
   topic.card.classList.remove("hidden");
   topic.card.querySelector(".topic-answer").classList.remove("hidden");
@@ -463,7 +466,6 @@ function expandTopic(id) {
 function removeTopic(id) {
   const topic = topics.find(t => t.id === id);
   if (!topic) return;
-
   topic.wrapper.style.opacity = "0";
   topic.wrapper.style.transform = "translateY(-6px)";
   topic.wrapper.style.transition = "all 0.2s ease";
@@ -488,17 +490,14 @@ function startExpiryTicker() {
   expiryTimer = setInterval(() => {
     const now = Date.now();
     topics.forEach(topic => {
-      const elapsed  = now - topic.createdAt;
-      const ratio    = Math.min(elapsed / TOPIC_EXPIRY_MS, 1);
-      const fill     = topic.card.querySelector(".topic-expiry-fill");
-
+      const elapsed = now - topic.createdAt;
+      const ratio   = Math.min(elapsed / TOPIC_EXPIRY_MS, 1);
+      const fill    = topic.card.querySelector(".topic-expiry-fill");
       if (fill) {
-        const pct = (1 - ratio) * 100;
-        fill.style.width = `${pct}%`;
+        fill.style.width = `${(1 - ratio) * 100}%`;
         fill.classList.toggle("warning",  ratio > 0.7 && ratio <= 0.9);
         fill.classList.toggle("critical", ratio > 0.9);
       }
-
       if (elapsed >= TOPIC_EXPIRY_MS) removeTopic(topic.id);
     });
   }, EXPIRY_TICK_MS);
