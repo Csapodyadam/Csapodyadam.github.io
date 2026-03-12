@@ -113,6 +113,7 @@ const summaryBlock    = document.getElementById("summary-block");
 const summaryTextEl   = document.getElementById("summary-text");
 const deleteSummary   = document.getElementById("delete-summary");
 const clearTranscript = document.getElementById("clear-transcript");
+const clearTopicsBtn  = document.getElementById("clear-topics");
 const langBtns        = document.querySelectorAll(".lang-btn");
 
 // ── Setup bar ─────────────────────────────────────────────────────────────────
@@ -304,6 +305,13 @@ function renderSummary() {
   summaryTextEl.textContent = summaryText;
   summaryBlock.classList.remove("hidden");
 }
+
+clearTopicsBtn.addEventListener("click", () => {
+  topics.forEach(t => t.wrapper.remove());
+  topics = [];
+  updateTopicCount();
+  topicsEmpty.classList.remove("hidden");
+});
 
 deleteSummary.addEventListener("click", () => {
   summaryText = "";
