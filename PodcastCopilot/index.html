@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PodcastCopilot</title>
+  <link rel="stylesheet" href="src/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- API KEY SETUP BAR -->
+  <div class="setup-bar" id="setup-bar">
+    <span class="setup-label">Enter your free <a href="https://console.groq.com/keys" target="_blank" rel="noopener">Groq API key</a> to get started:</span>
+    <div class="setup-input-row">
+      <input type="password" class="setup-input" id="api-key-input" placeholder="gsk_..." autocomplete="off" />
+      <button class="setup-save-btn" id="save-key-btn">Save</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">podcast<span class="accent">copilot</span></span>
+      <div class="status-dot" id="status-dot"></div>
+      <span class="status-text" id="status-text">Ready</span>
+    </div>
+    <div class="header-center">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="hu-HU">HU</button>
+        <button class="lang-btn" data-lang="en-US">EN</button>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="ctrl-btn key-btn" id="change-key-btn" title="Change API key">&#128273; Key</button>
+      <button class="ctrl-btn start-btn" id="start-btn">
+        <span class="btn-icon">&#9654;</span> Start Listening
+      </button>
+      <button class="ctrl-btn stop-btn hidden" id="stop-btn">
+        <span class="btn-icon">&#9632;</span> Stop
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- LEFT: Transcript -->
+    <aside class="transcript-panel">
+      <div class="panel-header">
+        <span class="panel-title">Transcript</span>
+        <button class="clear-btn" id="clear-transcript">Clear</button>
+      </div>
+
+      <!-- Summary of older context -->
+      <div class="summary-block hidden" id="summary-block">
+        <div class="summary-header">
+          <span class="summary-label">&#9654; Earlier context</span>
+          <button class="delete-summary-btn" id="delete-summary" title="Delete summary">&#10005;</button>
+        </div>
+        <p class="summary-text" id="summary-text"></p>
+      </div>
+
+      <!-- Live transcript -->
+      <div class="transcript-scroll" id="transcript-scroll">
+        <div class="transcript-empty" id="transcript-empty">
+          Press <strong>Start Listening</strong> to begin.<br/>
+          <span class="transcript-hint">Works best in Chrome.</span>
+        </div>
+        <div id="transcript-lines"></div>
+        <div class="interim-line" id="interim-line"></div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Topics -->
+    <main class="topics-panel">
+      <div class="panel-header">
+        <span class="panel-title">Topics</span>
+        <span class="panel-hint" id="topic-count">Listening for questions…</span>
+      </div>
+
+      <div class="topics-empty" id="topics-empty">
+        <div class="topics-empty-icon">&#9670;</div>
+        <p>Questions and knowledge gaps will appear here as buttons.</p>
+        <p>Click a button to see the answer and sources.</p>
+      </div>
+
+      <div class="topics-list" id="topics-list"></div>
+    </main>
+
+  </div>
+
+  <!-- TOPIC CARD TEMPLATE (hidden) -->
+  <template id="topic-card-template">
+    <div class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-card-meta">
+          <span class="topic-card-time"></span>
+          <div class="topic-expiry-bar"><div class="topic-expiry-fill"></div></div>
+        </div>
+        <button class="topic-dismiss" title="Dismiss">&#10005;</button>
+      </div>
+      <p class="topic-question"></p>
+      <div class="topic-answer hidden">
+        <div class="topic-answer-text"></div>
+        <div class="topic-sources"></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- TOPIC BUTTON TEMPLATE (hidden) -->
+  <template id="topic-btn-template">
+    <button class="topic-btn">
+      <span class="topic-btn-label"></span>
+      <span class="topic-btn-dot"></span>
+    </button>
+  </template>
+
+  <script src="src/app.js"></script>
+</body>
+</html>
