@@ -564,6 +564,7 @@ function addTopic({ label, question, answer, sources }) {
     sourcesEl.appendChild(a);
   });
 
+  card.querySelector(".topic-collapse").addEventListener("click", () => collapseTopic(id));
   card.querySelector(".topic-dismiss").addEventListener("click", () => removeTopic(id));
   wrapper.appendChild(card);
   topicsList.prepend(wrapper);
@@ -578,6 +579,13 @@ function expandTopic(id) {
   topic.btn.classList.add("expanded");
   topic.card.classList.remove("hidden");
   topic.card.querySelector(".topic-answer").classList.remove("hidden");
+}
+
+function collapseTopic(id) {
+  const topic = topics.find(t => t.id === id);
+  if (!topic) return;
+  topic.card.classList.add("hidden");
+  topic.btn.classList.remove("expanded");
 }
 
 function removeTopic(id) {

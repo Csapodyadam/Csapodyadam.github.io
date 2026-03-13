@@ -633,6 +633,7 @@ body {
 .topic-expiry-fill.warning { background: var(--amber); }
 .topic-expiry-fill.critical { background: var(--red); }
 
+.topic-collapse,
 .topic-dismiss {
   background: none;
   border: none;
@@ -644,7 +645,8 @@ body {
   transition: color var(--transition);
   flex-shrink: 0;
 }
-.topic-dismiss:hover { color: var(--red); }
+.topic-collapse:hover { color: var(--accent); }
+.topic-dismiss:hover  { color: var(--red); }
 
 .topic-question {
   font-size: 0.875rem;
