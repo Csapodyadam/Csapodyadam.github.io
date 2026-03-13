@@ -82,7 +82,10 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/" or path == "/index.html":
             self._serve_file(ROOT / "index.html", "text/html")
         elif path.startswith("/src/"):
-            file_path = ROOT / path.lstrip("/")
+            file_path = (ROOT / path.lstrip("/")).resolve()
+            if not str(file_path).startswith(str(ROOT.resolve())):
+                self._send(403, {"error": "Forbidden"})
+                return
             ext = file_path.suffix
             mime = {"css": "text/css", "js": "application/javascript"}.get(ext.lstrip("."), "text/plain")
             self._serve_file(file_path, mime)

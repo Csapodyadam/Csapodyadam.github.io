@@ -10,12 +10,48 @@
 </head>
 <body>
 
-  <!-- API KEY SETUP BAR -->
-  <div class="setup-bar" id="setup-bar">
-    <span class="setup-label">Enter your free <a href="https://console.groq.com/keys" target="_blank" rel="noopener">Groq API key</a> to get started:</span>
-    <div class="setup-input-row">
-      <input type="password" class="setup-input" id="api-key-input" placeholder="gsk_..." autocomplete="off" />
-      <button class="setup-save-btn" id="save-key-btn">Save</button>
+  <!-- ONBOARDING OVERLAY -->
+  <div class="onboarding-overlay" id="onboarding-overlay">
+    <div class="onboarding-modal">
+      <button class="onboarding-close hidden" id="onboarding-close" title="Close">&times;</button>
+
+      <div class="onboarding-logo">podcast<span class="accent">copilot</span></div>
+      <p class="onboarding-tagline">Real-time AI research assistant for podcast hosts</p>
+      <div class="onboarding-divider"></div>
+
+      <p class="onboarding-intro">To get started, you need a <strong>free Groq API key</strong> — it powers the live speech transcription and AI analysis.</p>
+
+      <div class="onboarding-steps">
+        <div class="onboarding-step">
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <span class="step-title">Create a free account</span>
+            <span class="step-desc">Visit <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a> — no credit card, no catch.</span>
+          </div>
+        </div>
+        <div class="onboarding-step">
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <span class="step-title">Generate an API key</span>
+            <span class="step-desc">Click <strong>Create API Key</strong>, give it any name, and copy it.</span>
+          </div>
+        </div>
+        <div class="onboarding-step">
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <span class="step-title">Paste it below</span>
+            <span class="step-desc">Your key starts with <code>gsk_</code></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="free-badge">&#10003; Completely free &mdash; Groq's generous free tier is more than enough for regular podcast use</div>
+
+      <div class="onboarding-input-row">
+        <input type="password" id="api-key-input" class="onboarding-key-input" placeholder="gsk_..." autocomplete="off" spellcheck="false" />
+        <button id="save-key-btn" class="onboarding-save-btn">Get Started &rarr;</button>
+      </div>
+      <p class="onboarding-privacy">&#128274; Stored only in your browser &mdash; never sent to any server</p>
     </div>
   </div>
 

@@ -87,10 +87,11 @@ let pendingArchive = false;
 let topics = [];
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
-const setupBar        = document.getElementById("setup-bar");
-const apiKeyInput     = document.getElementById("api-key-input");
-const saveKeyBtn      = document.getElementById("save-key-btn");
-const changeKeyBtn    = document.getElementById("change-key-btn");
+const onboardingOverlay = document.getElementById("onboarding-overlay");
+const onboardingClose   = document.getElementById("onboarding-close");
+const apiKeyInput       = document.getElementById("api-key-input");
+const saveKeyBtn        = document.getElementById("save-key-btn");
+const changeKeyBtn      = document.getElementById("change-key-btn");
 const statusDot       = document.getElementById("status-dot");
 const statusText      = document.getElementById("status-text");
 const startBtn        = document.getElementById("start-btn");
@@ -108,35 +109,50 @@ const clearTranscript = document.getElementById("clear-transcript");
 const clearTopicsBtn  = document.getElementById("clear-topics");
 const langBtns        = document.querySelectorAll(".lang-btn");
 
-// ── Setup bar ─────────────────────────────────────────────────────────────────
-function initSetupBar() {
-  getApiKey() ? setupBar.classList.add("hidden") : setupBar.classList.remove("hidden");
+// ── Onboarding overlay ────────────────────────────────────────────────────────
+function initOnboarding() {
+  if (getApiKey()) {
+    onboardingOverlay.classList.add("hidden");
+  } else {
+    onboardingOverlay.classList.remove("hidden");
+    onboardingClose.classList.add("hidden");
+    setTimeout(() => apiKeyInput.focus(), 100);
+  }
 }
 
 saveKeyBtn.addEventListener("click", () => {
   const val = apiKeyInput.value.trim();
   if (!val.startsWith("gsk_")) {
     apiKeyInput.style.borderColor = "var(--red)";
+    apiKeyInput.style.boxShadow = "0 0 0 3px rgba(239,68,68,0.2)";
     return;
   }
   saveApiKey(val);
-  setupBar.classList.add("hidden");
+  onboardingOverlay.classList.add("hidden");
+  onboardingClose.classList.add("hidden");
   apiKeyInput.value = "";
   apiKeyInput.style.borderColor = "";
+  apiKeyInput.style.boxShadow = "";
   setStatus("idle", "Ready");
 });
 
 apiKeyInput.addEventListener("keydown", e => {
   if (e.key === "Enter") saveKeyBtn.click();
   apiKeyInput.style.borderColor = "";
+  apiKeyInput.style.boxShadow = "";
 });
 
 changeKeyBtn.addEventListener("click", () => {
-  setupBar.classList.toggle("hidden");
-  if (!setupBar.classList.contains("hidden")) apiKeyInput.focus();
+  onboardingOverlay.classList.remove("hidden");
+  onboardingClose.classList.remove("hidden");
+  apiKeyInput.focus();
 });
 
-initSetupBar();
+onboardingClose.addEventListener("click", () => {
+  onboardingOverlay.classList.add("hidden");
+});
+
+initOnboarding();
 
 // ── Language toggle ───────────────────────────────────────────────────────────
 langBtns.forEach(btn => {
@@ -154,7 +170,8 @@ stopBtn.addEventListener("click",  stopListening);
 
 async function startListening() {
   if (!getApiKey()) {
-    setupBar.classList.remove("hidden");
+    onboardingOverlay.classList.remove("hidden");
+    onboardingClose.classList.add("hidden");
     apiKeyInput.focus();
     return;
   }
@@ -402,7 +419,8 @@ async function runAnalysis() {
     console.warn("Analyze failed:", e);
     if (e.message.includes("401") || e.message.toLowerCase().includes("invalid")) {
       setStatus("error", "Invalid API key");
-      setupBar.classList.remove("hidden");
+      onboardingOverlay.classList.remove("hidden");
+      onboardingClose.classList.remove("hidden");
     }
   } finally {
     if (isListening) setStatus("listening", "Listening…");
@@ -440,7 +458,8 @@ function addTopic({ label, question, answer, sources }) {
   (sources || []).forEach(s => {
     const a = document.createElement("a");
     a.className = "source-link";
-    a.href = s.url || "#";
+    const safe = /^https?:\/\//i.test(s.url) ? s.url : "#";
+    a.href = safe;
     a.target = "_blank";
     a.rel = "noopener";
     a.textContent = s.title;
