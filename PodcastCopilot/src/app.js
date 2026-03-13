@@ -108,6 +108,8 @@ const deleteSummary   = document.getElementById("delete-summary");
 const clearTranscript = document.getElementById("clear-transcript");
 const clearTopicsBtn  = document.getElementById("clear-topics");
 const langBtns        = document.querySelectorAll(".lang-btn");
+const resizeHandle    = document.getElementById("resize-handle");
+const layout          = document.querySelector(".layout");
 
 // ── Onboarding overlay ────────────────────────────────────────────────────────
 function initOnboarding() {
@@ -153,6 +155,32 @@ onboardingClose.addEventListener("click", () => {
 });
 
 initOnboarding();
+
+// ── Resizable transcript panel ────────────────────────────────────────────────
+let isResizing = false;
+
+resizeHandle.addEventListener("mousedown", e => {
+  isResizing = true;
+  resizeHandle.classList.add("dragging");
+  document.body.style.cursor    = "col-resize";
+  document.body.style.userSelect = "none";
+  e.preventDefault();
+});
+
+document.addEventListener("mousemove", e => {
+  if (!isResizing) return;
+  const rect     = layout.getBoundingClientRect();
+  const newWidth = Math.max(180, Math.min(600, e.clientX - rect.left));
+  layout.style.gridTemplateColumns = `${newWidth}px 6px 1fr`;
+});
+
+document.addEventListener("mouseup", () => {
+  if (!isResizing) return;
+  isResizing = false;
+  resizeHandle.classList.remove("dragging");
+  document.body.style.cursor     = "";
+  document.body.style.userSelect = "";
+});
 
 // ── Language toggle ───────────────────────────────────────────────────────────
 langBtns.forEach(btn => {
@@ -428,9 +456,47 @@ async function runAnalysis() {
 }
 
 // ── Topics ────────────────────────────────────────────────────────────────────
+function topicKeywords(s) {
+  return s.toLowerCase()
+    .replace(/[^\w\sáéíóöőúüű]/gi, "")
+    .split(/\s+/)
+    .filter(w => w.length > 3);
+}
+
+function findSimilarTopic(label, question) {
+  const norm  = s => s.toLowerCase().replace(/\s+/g, " ").trim();
+  const kwSet = s => new Set(topicKeywords(s));
+
+  return topics.find(t => {
+    // Exact label match
+    if (norm(t.label) === norm(label)) return true;
+
+    // All meaningful words in the shorter label appear in the longer one
+    const a = kwSet(t.label), b = kwSet(label);
+    const [smaller, larger] = a.size <= b.size ? [a, b] : [b, a];
+    if (smaller.size > 0 && [...smaller].every(w => larger.has(w))) return true;
+
+    // Question shares ≥60% of its keywords with an existing question
+    const qNew = topicKeywords(question);
+    if (qNew.length === 0) return false;
+    const qExisting = kwSet(t.question);
+    const overlap = qNew.filter(w => qExisting.has(w));
+    return overlap.length / qNew.length >= 0.6;
+  });
+}
+
+function bumpTopic(topic) {
+  // Scroll the wrapper into view and flash the button
+  topic.wrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  topic.btn.classList.remove("bump");
+  void topic.btn.offsetWidth; // force reflow to restart animation
+  topic.btn.classList.add("bump");
+  topic.btn.addEventListener("animationend", () => topic.btn.classList.remove("bump"), { once: true });
+}
+
 function addTopic({ label, question, answer, sources }) {
-  const norm = s => s.toLowerCase().replace(/\s+/g, " ").trim();
-  if (topics.some(t => norm(t.label) === norm(label))) return;
+  const existing = findSimilarTopic(label, question);
+  if (existing) { bumpTopic(existing); return; }
 
   const id = `topic-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
   const createdAt = Date.now();

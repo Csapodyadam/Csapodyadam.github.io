@@ -337,9 +337,26 @@ body {
 /* ── Layout ───────────────────────────────────────────────────────────────── */
 .layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 380px 6px 1fr;
   flex: 1;
   overflow: hidden;
+}
+
+/* ── Resize handle ────────────────────────────────────────────────────────── */
+.resize-handle {
+  background: var(--border);
+  cursor: col-resize;
+  transition: background var(--transition);
+  position: relative;
+}
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: var(--accent);
+}
+.resize-handle::after {
+  content: "";
+  position: absolute;
+  inset: 0 -4px;
 }
 
 /* ── Panel headers ────────────────────────────────────────────────────────── */
@@ -380,9 +397,9 @@ body {
 .transcript-panel {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--border);
   background: var(--bg-panel);
   overflow: hidden;
+  min-width: 180px;
 }
 
 /* Summary block */
@@ -655,4 +672,15 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+/* Bump animation — plays when a duplicate topic is detected */
+@keyframes bump {
+  0%   { transform: none; box-shadow: none; }
+  35%  { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.25); }
+  100% { transform: none; box-shadow: none; }
+}
+.topic-btn.bump {
+  animation: bump 0.5s ease;
+  border-color: rgba(0, 212, 255, 0.55) !important;
 }
