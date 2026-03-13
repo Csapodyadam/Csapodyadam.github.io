@@ -79,6 +79,8 @@ let expiryTimer       = null;
 let quickTriggerTimer = null;
 let audioStream       = null;
 let chunkTimer        = null;
+let audioCtx          = null;
+let animFrameId       = null;
 
 let liveLines     = [];
 let archivedText  = "";
@@ -110,6 +112,8 @@ const clearTopicsBtn  = document.getElementById("clear-topics");
 const langBtns        = document.querySelectorAll(".lang-btn");
 const resizeHandle    = document.getElementById("resize-handle");
 const layout          = document.querySelector(".layout");
+const voiceBars       = document.getElementById("voice-bars");
+const voiceBarEls     = voiceBars.querySelectorAll(".voice-bar");
 
 // ── Onboarding overlay ────────────────────────────────────────────────────────
 function initOnboarding() {
@@ -216,6 +220,29 @@ async function startListening() {
   stopBtn.classList.remove("hidden");
   transcriptEmpty.classList.add("hidden");
   setStatus("listening", "Listening…");
+
+  // Voice level visualizer
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 64;
+  analyser.smoothingTimeConstant = 0.75;
+  audioCtx.createMediaStreamSource(audioStream).connect(analyser);
+  const freqData = new Uint8Array(analyser.frequencyBinCount);
+  const barMults = [0.6, 1.0, 0.85, 0.55];
+  voiceBars.classList.remove("hidden");
+  (function animBars() {
+    animFrameId = requestAnimationFrame(animBars);
+    analyser.getByteFrequencyData(freqData);
+    let sum = 0;
+    const n = Math.floor(freqData.length / 2);
+    for (let i = 0; i < n; i++) sum += freqData[i];
+    const vol = sum / (n * 255);
+    voiceBarEls.forEach((bar, i) => {
+      const h = Math.max(2, vol * 22 * barMults[i] * (0.8 + Math.random() * 0.4));
+      bar.style.height = `${h}px`;
+    });
+  })();
+
   scheduleAnalyze();
   startExpiryTicker();
   recordChunk();
@@ -228,6 +255,11 @@ function stopListening() {
   clearInterval(expiryTimer);
   audioStream?.getTracks().forEach(t => t.stop());
   audioStream = null;
+  cancelAnimationFrame(animFrameId);
+  animFrameId = null;
+  if (audioCtx) { audioCtx.close(); audioCtx = null; }
+  voiceBars.classList.add("hidden");
+  voiceBarEls.forEach(b => b.style.height = "2px");
   startBtn.classList.remove("hidden");
   stopBtn.classList.add("hidden");
   interimLine.textContent = "";

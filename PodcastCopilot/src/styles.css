@@ -279,6 +279,21 @@ body {
   font-family: var(--mono);
 }
 
+/* Voice level bars */
+.voice-bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 18px;
+}
+.voice-bar {
+  width: 3px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: height 0.07s ease;
+}
+
 /* Language toggle */
 .lang-toggle {
   display: flex;
