@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV Display PCB | Adam Csapody</title>
+  <link rel="stylesheet" href="../src/styles.css" />
+  <link rel="stylesheet" href="../src/project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav-header">
+    <nav class="nav container">
+      <a href="../index.html" class="nav-logo">csapody<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main class="project-main">
+
+    <!-- HERO -->
+    <section class="proj-hero">
+      <svg class="hero-wave" viewBox="0 0 1000 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline points="0,40 60,40 60,10 120,10 120,70 180,70 180,10 240,10 240,40 320,40 320,10 380,10 380,70 440,70 440,40 550,40 550,10 610,10 610,70 670,70 670,40 1000,40"
+          fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+
+      <div class="container">
+        <a href="../index.html#projects" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Projects
+        </a>
+
+        <div class="proj-hero-content">
+          <div class="proj-tags-row">
+            <span class="tag">Altium Designer</span>
+            <span class="tag">ESP32</span>
+            <span class="tag">C++</span>
+            <span class="tag">Hardware</span>
+            <span class="proj-version">V2</span>
+          </div>
+          <h1 class="proj-title">CV Display PCB</h1>
+          <p class="proj-subtitle">
+            A business-card-sized PCB built around an ESP32 that doubles as a portable interactive CV.
+            Displays a paginated CV and QR code on a TFT screen, includes a digital spirit level driven by
+            an accelerometer, a hold-to-fire laser pointer, and a Wi-Fi CV editor that lets the owner
+            update the on-board text from any phone &mdash; persisted to flash so it survives a power cycle.
+          </p>
+
+          <div class="proj-meta-row">
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">MCU</span>
+              <span class="proj-meta-value">ESP32</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Display</span>
+              <span class="proj-meta-value">ST7735 TFT (SPI)</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Sensor</span>
+              <span class="proj-meta-value">ADXL345 (I&sup2;C)</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Power</span>
+              <span class="proj-meta-value">LiPo charger + LDO</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Tooling</span>
+              <span class="proj-meta-value">Altium Designer / Arduino IDE</span>
+            </div>
+            <div class="proj-meta-item">
+              <span class="proj-meta-label">Persistence</span>
+              <span class="proj-meta-value">ESP32 NVS flash</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="proj-section" id="overview">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">01</span>
+          <span class="section-name">Overview</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>A business card you can interact with</h2>
+          <p>
+            Paper business cards are forgettable. This one isn&rsquo;t.
+            The CV Display PCB is a self-powered, pocket-sized circuit board that puts an entire
+            interactive CV in someone&rsquo;s hand &mdash; with a TFT screen, three navigation buttons,
+            and a handful of demos that show off both the hardware and the firmware behind it.
+          </p>
+          <p>
+            Four modes are reachable from the main menu, each designed to be glanceable and
+            self-explanatory without any external setup.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Paginated digital CV</strong>
+                <p>The owner&rsquo;s CV is word-wrapped to the TFT and split into pages on blank-line boundaries. Buttons step forward/back through the pages.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>QR code display</strong>
+                <p>A 128&times;128 monochrome QR linking to the online portfolio is drawn from PROGMEM &mdash; scan it with any phone to keep the conversation going.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Digital spirit level</strong>
+                <p>Live roll and pitch readout from the on-board ADXL345 accelerometer, with a dot/line indicator and one-press tare calibration.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Hold-to-fire laser</strong>
+                <p>A board-mounted laser diode that activates only while the confirm button is held &mdash; safety-by-design, no latching state.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HARDWARE -->
+    <section class="proj-section proj-section-alt" id="hardware">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">02</span>
+          <span class="section-name">Hardware</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Board design in Altium</h2>
+          <p>
+            The V2 design is captured in Altium Designer across three hierarchical schematic sheets:
+            a top-level <strong>Main sheet</strong>, a <strong>Power management</strong> block,
+            and an <strong>MCU and peripherals</strong> block. Splitting the design this way keeps
+            the analog power section visually isolated from the digital bus routing.
+          </p>
+
+          <div class="mode-cards">
+            <div class="mode-card">
+              <div class="mode-card-header">
+                <span class="mode-badge mode-single">Power management</span>
+                <code class="mode-voltage">LiPo &rarr; 3.3V</code>
+              </div>
+              <p>
+                A single-cell LiPo cell is paired with a dedicated charging IC and an LDO regulator
+                to produce a clean 3.3V rail for the ESP32 and the peripherals. The board can run
+                tethered over USB or untethered on battery &mdash; no external supply or breadboard
+                required.
+              </p>
+            </div>
+            <div class="mode-card">
+              <div class="mode-card-header">
+                <span class="mode-badge mode-dual">MCU &amp; peripherals</span>
+                <code class="mode-voltage">ESP32 + SPI + I&sup2;C</code>
+              </div>
+              <p>
+                The ESP32 drives the ST7735 TFT over a 5-wire SPI bus, talks to the ADXL345
+                accelerometer over a dedicated I&sup2;C pair, polls three pushbuttons with internal
+                pull-ups, and switches the laser diode through a GPIO. All non-default pins are
+                remapped at firmware startup to suit the board layout.
+              </p>
+            </div>
+          </div>
+
+          <div class="usage-steps">
+            <h3>Pin map (non-default)</h3>
+            <ol class="steps-list">
+              <li><span class="step-num">1</span> <strong>TFT (ST7735, SPI):</strong> <code>SCLK&nbsp;8</code> &middot; <code>MOSI&nbsp;9</code> &middot; <code>RST&nbsp;10</code> &middot; <code>DC&nbsp;11</code> &middot; <code>CS&nbsp;12</code></li>
+              <li><span class="step-num">2</span> <strong>Buttons (active-LOW, pull-ups):</strong> <code>T&nbsp;14</code> (navigate) &middot; <code>R&nbsp;15</code> (confirm / fire) &middot; <code>M&nbsp;16</code> (back)</li>
+              <li><span class="step-num">3</span> <strong>ADXL345 (I&sup2;C):</strong> <code>SDA&nbsp;17</code> &middot; <code>SCL&nbsp;18</code></li>
+              <li><span class="step-num">4</span> <strong>Laser diode:</strong> <code>GPIO&nbsp;6</code></li>
+            </ol>
+          </div>
+
+          <h3 style="margin-top:2.5rem;">Schematic sheets</h3>
+          <p>
+            The design is split across three hierarchical sheets. The top sheet stitches the power and
+            MCU blocks together; each block lives on its own page so the analog supply rails stay
+            visually separated from the digital signal routing.
+          </p>
+
+          <figure class="sim-figure" style="margin-top:1.5rem;">
+            <div class="img-frame img-frame-wide">
+              <img src="../assets/images/cv-display-pcb/Top_sheet_sch.png"
+                   alt="Top-level hierarchical schematic sheet showing USB Type-C input feeding the power management and MCU blocks"
+                   loading="lazy" />
+            </div>
+            <figcaption>
+              <strong>Top sheet</strong> &mdash; USB Type-C input (J1) on the left feeds both the
+              <em>Power management</em> block (5V&nbsp;&rarr;&nbsp;3.3V via LiPo charger + LDO) and the
+              <em>MCU and peripherals</em> block (USB data lines + 3.3V rail). The CC1/CC2 pins are
+              pulled down through R2/R3 (5.1k&Omega;) to configure the port as a UFP (sink-only).
+            </figcaption>
+          </figure>
+
+          <figure class="sim-figure" style="margin-top:2rem;">
+            <div class="img-frame img-frame-wide">
+              <img src="../assets/images/cv-display-pcb/power_management_sch.png"
+                   alt="Power management schematic — MCP73831 LiPo charger, MIC5504 LDO regulator, USB / battery power-path diodes"
+                   loading="lazy" />
+            </div>
+            <figcaption>
+              <strong>Power management</strong> &mdash; A <code>MCP73831T-2ACI/OT</code> (U2) handles
+              single-cell LiPo charging from the USB 5V rail, with R12 (4.7k&Omega;) setting the
+              charge current and D1 as the charge-status LED. Schottky diodes D2 and D3 OR the USB
+              and battery rails before feeding the <code>MIC5504-3.3</code> LDO (U3), which produces
+              the clean 3.3V rail used everywhere downstream. SW6 is the master power switch; J3 is
+              the JST connector for the LiPo cell.
+            </figcaption>
+          </figure>
+
+          <figure class="sim-figure" style="margin-top:2rem;">
+            <div class="img-frame img-frame-wide">
+              <img src="../assets/images/cv-display-pcb/mcu_io_sch.png"
+                   alt="MCU and peripherals schematic — ESP32-S3-WROOM-1, ST7735 TFT, ADXL345 accelerometer, three pushbuttons, laser driver transistor"
+                   loading="lazy" />
+            </div>
+            <figcaption>
+              <strong>MCU and peripherals</strong> &mdash; An ESP32-S3-WROOM-1 module (split across
+              two pages as U1A and U1B for readability) drives the ST7735 TFT over a 5-wire SPI bus,
+              talks to the ADXL345 leveling sensor over a dedicated I&sup2;C pair, polls three
+              pushbuttons (each with its own RC debounce) and switches the laser diode through Q1
+              &mdash; an NPN transistor gated by the <code>LED_CTRL</code> GPIO so the ESP32 pin
+              isn&rsquo;t loaded with the laser drive current directly.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIRMWARE -->
+    <section class="proj-section" id="firmware">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">03</span>
+          <span class="section-name">Firmware</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>State machine with flicker-free rendering</h2>
+          <p>
+            The whole firmware is a single Arduino sketch driven by an <code>AppState</code>
+            enum &mdash; <code>MENU</code>, <code>LEVELING</code>, <code>CV</code>, <code>QR</code>,
+            <code>CVEDIT</code>, <code>LASER</code>. The back button is handled globally before the
+            per-state branch so that returning to the menu always performs the right cleanup
+            (tearing down the Wi-Fi AP, turning the laser off, etc.) regardless of which mode is active.
+          </p>
+          <p>
+            The ST7735 over SPI is slow enough that a naive full-redraw every frame causes visible
+            flicker. The firmware uses an <strong>incremental rendering</strong> pattern instead:
+            each mode draws its static chrome once on entry, then per-frame loops only repaint the
+            pixels that have changed.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Menu</strong>
+                <p>Only the selection arrow is erased and redrawn between frames &mdash; the menu text itself is touched once.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Leveling</strong>
+                <p>Roll/pitch labels drawn once. Numeric values repaint only when the rounded integer changes, and the dot/line indicator moves only on pixel-level changes.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>Laser</strong>
+                <p>The title is drawn once; only the <code>ON</code>/<code>OFF</code> status line is repainted on button edges.</p>
+              </div>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">&#9654;</span>
+              <div>
+                <strong>CV pages</strong>
+                <p>Text is split on blank-line boundaries (<code>\n\n</code>) and word-wrapped to 26 characters per line at the smallest font size.</p>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="margin-top:2rem;">Sensor quirks worth knowing</h3>
+          <p>
+            The ADXL345 is physically mounted <em>upside-down</em> on the board, flipped 180&deg;
+            about its X axis. The leveling loop negates the <code>ay</code> and <code>az</code>
+            readings before computing roll and pitch &mdash; a single line of code that compensates
+            for a deliberate mechanical choice. Default calibration offsets
+            (<code>roll&nbsp;=&nbsp;&minus;4&deg;</code>, <code>pitch&nbsp;=&nbsp;2.5&deg;</code>)
+            account for the assembly tolerance of this specific build; a button-press captures a
+            new zero on demand, and a second button-press restores the factory defaults. Both
+            calibration triggers are edge-detected so that holding a button doesn&rsquo;t
+            continuously re-zero the level.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WI-FI CV EDITOR -->
+    <section class="proj-section proj-section-alt" id="editor">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">04</span>
+          <span class="section-name">Wi-Fi CV Editor</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Edit the CV from any phone &mdash; no cable, no app</h2>
+          <p>
+            The standout feature: from the menu, the board can stand up its own
+            <strong>Wi-Fi access point</strong> and serve a small web form straight from the ESP32.
+            Connect a phone to the AP, open the captive page, edit the CV text in a browser, hit
+            save, and the new content is written to the ESP32&rsquo;s non-volatile flash &mdash;
+            ready to display on the very next power cycle. No companion app, no firmware reflash,
+            no cable.
+          </p>
+
+          <div class="usage-steps">
+            <h3>The flow</h3>
+            <ol class="steps-list">
+              <li><span class="step-num">1</span> Select <code>Edit CV</code> from the on-board menu. The firmware brings up an open AP named <code>ESP32_CV_Edit</code>.</li>
+              <li><span class="step-num">2</span> Join the AP from any phone or laptop and visit <code>192.168.4.1</code> in a browser.</li>
+              <li><span class="step-num">3</span> The ESP32&rsquo;s embedded HTTP server serves a <code>&lt;textarea&gt;</code> pre-filled with the current CV text.</li>
+              <li><span class="step-num">4</span> Edit, hit <strong>Save</strong>. The handler normalizes CRLF&nbsp;&rarr;&nbsp;LF (so the <code>\n\n</code> page-break detection keeps working with browser submissions) and writes to NVS.</li>
+              <li><span class="step-num">5</span> Press the back button to leave edit mode &mdash; the AP is torn down cleanly and the new CV is shown on next entry to the CV view.</li>
+            </ol>
+          </div>
+
+          <p style="margin-top:2rem;">
+            Persistence lives in the ESP32&rsquo;s NVS partition under namespace
+            <code>cvstore</code>, key <code>cv</code>. Because only the save handler writes to flash
+            &mdash; and only when the user submits the form &mdash; the wear-level cost is
+            essentially zero in normal use.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT'S NEXT -->
+    <section class="proj-section" id="next">
+      <div class="container proj-section-grid">
+        <div class="proj-section-label">
+          <span class="section-number">05</span>
+          <span class="section-name">What&rsquo;s Next</span>
+        </div>
+        <div class="proj-section-body">
+          <h2>Planned improvements</h2>
+          <p>
+            V2 is the current working revision. A handful of refinements are queued for the next
+            spin of the board and the firmware that runs on it.
+          </p>
+          <ul class="v2-list">
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>Refresh the layout</strong>
+                <p>Re-route the digital and analog sections with cleaner ground planes, and rework the silkscreen so the printed CV info on the back of the board has more breathing room.</p>
+              </div>
+            </li>
+            <li>
+              <span class="v2-bullet">&#9670;</span>
+              <div>
+                <strong>Better firmware ergonomics</strong>
+                <p>Break the single-file Arduino sketch into separate translation units per mode, and replace the shared debounce timer with per-button state &mdash; small refactors that will make adding new modes cheaper.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-proj">
+      <a href="../index.html#projects" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Projects
+      </a>
+      <p>Adam Csapody &mdash; <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="../src/main.js"></script>
+</body>
+</html>

@@ -15,6 +15,7 @@ const PROJECTS = [
     image: "",
     placeholderLabel: "PCB Design",
     links: [],
+    page: "projects/cv-display-pcb.html",
     featured: true,
   },
   {
